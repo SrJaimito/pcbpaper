@@ -26,3 +26,6 @@ $(TEST_DIR)/test_socket: $(SUBMOD_TEST_DIR)/test_socket.c $(BUILD_DIR)/socket.o
 $(TEST_DIR)/test_component: $(SUBMOD_TEST_DIR)/test_component.c $(BUILD_DIR)/component.o $(BUILD_DIR)/socket.o
 	$(CC) $^ -o $@ $(CFLAGS)
 
+$(TEST_DIR)/test_cell: $(SUBMOD_TEST_DIR)/test_cell.o $(BUILD_DIR)/cell.o $(BUILD_DIR)/component.o $(BUILD_DIR)/socket.o
+	$(CC) $^ -o $@ $(CFLAGS)
+

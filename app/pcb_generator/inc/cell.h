@@ -13,10 +13,16 @@ typedef struct {
     int possibilities;
 } cell_t;
 
+#ifdef __TEST_CELL__
+int append_component(cell_t *, component_t *);
+component_t *get(cell_t *, int);
+void remove_at(cell_t *, int);
+#endif
+
 int init_cell(cell_t *cell);
 
 component_t *get_component(cell_t *cell);
-void reduce_possibilities(cell_t *target, socket_position_e target_socket,
+int reduce_possibilities(cell_t *target, socket_position_e target_socket,
         cell_t *reference, socket_position_e reference_socket);
 void collapse(cell_t *cell);
 

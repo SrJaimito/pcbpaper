@@ -12,22 +12,14 @@ int main(int argc, char *argv[]) {
 
     srand(time(NULL));
 
-    init_pcb(&pcb, width, height);
+    printf("Init PCB: %s\n", init_pcb(&pcb, width, height) ? "OK" : "FAILED");
 
-    int random_x = rand() % width;
-    int random_y = rand() % height;
+    generate_random_pcb(&pcb);
 
-    collapse_component(&pcb, random_x, random_y);
-    propagate_from_component(&pcb, random_x, random_y);
+    printf("OK!\n");
 
-    while (!pcb_collapsed(&pcb)) {
-        int x, y;
+    free_pcb(&pcb);
 
-        search_next_component_to_collapse(&pcb, &x, &y);
-        collapse_component(&pcb, x, y);
-        propagate_from_component(&pcb, x, y);
-    }
-
-    debug_print_pcb(&pcb);
+    return 0;
 }
 

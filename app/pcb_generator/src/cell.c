@@ -2,7 +2,13 @@
 
 #include <stdlib.h>
 
-static int append_component(cell_t *cell, component_t *component) {
+#ifdef __TEST_CELL__
+#define STATIC
+#else
+#define STATIC static
+#endif
+
+STATIC int append_component(cell_t *cell, component_t *component) {
     // Create node for component
     component_list_node_t *node = (component_list_node_t *) malloc(sizeof(component_list_node_t));
     if (node == NULL) {
@@ -29,7 +35,7 @@ static int append_component(cell_t *cell, component_t *component) {
     return 1;
 }
 
-static component_t *get(cell_t *cell, int index) {
+STATIC component_t *get(cell_t *cell, int index) {
     if (index < 0 || index >= cell->possibilities) {
         return NULL;
     }
@@ -42,8 +48,12 @@ static component_t *get(cell_t *cell, int index) {
     return &node->component;
 }
 
-static void remove_at(cell_t *cell, int index) {
+STATIC void remove_at(cell_t *cell, int index) {
     if (index < 0 || index >= cell->possibilities) {
+        return;
+    }
+
+    if (cell->possibilities == 0) {
         return;
     }
 
@@ -51,7 +61,13 @@ static void remove_at(cell_t *cell, int index) {
 
     if (index == 0) {
         target = cell->first;
-        cell->first = NULL;
+
+        if (cell->possibilities == 1) {
+            cell->first = NULL;
+        } else {
+            cell->first = cell->first->next;
+        }
+
     } else {
         component_list_node_t *previous = cell->first;
         for (int i = 0; i < index - 1; i++) {
@@ -94,8 +110,10 @@ component_t *get_component(cell_t *cell) {
     return &cell->first->component;
 }
 
-void reduce_possibilities(cell_t *target, socket_position_e target_socket,
+int reduce_possibilities(cell_t *target, socket_position_e target_socket,
         cell_t *reference, socket_position_e reference_socket) {
+
+    int had_to_propagate = 0;
 
     for (int i = 0; i < target->possibilities; i++) {
         component_t *target_component = get(target, i);
@@ -113,12 +131,25 @@ void reduce_possibilities(cell_t *target, socket_position_e target_socket,
         if (!can_connect) {
             remove_at(reference, i);
             i--;
+
+            had_to_propagate = 1;
         }
     }
+
+    return had_to_propagate;
 }
 
 void collapse(cell_t *cell) {
+    int possibilities = cell->possibilities;
+    int choice = rand() % possibilities;
 
+    for (int i = 0; i < choice; i++) {
+        remove_at(cell, 0);
+    }
+
+    for (int i = choice + 1; i < possibilities; i++) {
+        remove_at(cell, 1);
+    }
 }
 
 void free_cell(cell_t *cell) {
