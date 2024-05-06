@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -12,6 +13,12 @@ int main(int argc, char *argv[]) {
     srand(time(NULL));
 
     init_pcb(&pcb, width, height);
+
+    int random_x = rand() % width;
+    int random_y = rand() % height;
+
+    collapse_component(&pcb, random_x, random_y);
+    propagate_from_component(&pcb, random_x, random_y);
 
     while (!pcb_collapsed(&pcb)) {
         int x, y;

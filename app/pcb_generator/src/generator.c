@@ -3,34 +3,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-void reset_possibilities(pcb_cell_t *cell) {
-    for (int type = 0; type < NUM_COMPONENT_TYPES; type++) {
-        for (int rotation = ROT_0; rotation <= ROT_270; rotation++) {
-            cell->possible_components[type * 4 + rotation] = create_component(type);
-            cell->possible_components[type * 4 + rotation].rotation = rotation;
-        }
-    }
-
-    cell->possibilities = NUM_COMPONENT_TYPES * 4;
-}
-
 int init_pcb(pcb_t *pcb, int width, int height) {
     pcb->width = width;
     pcb->height = height;
 
-    pcb->cells = (pcb_cell_t **) malloc(height * sizeof(pcb_cell_t *));
+    pcb->cells = (cell_t **) malloc(height * sizeof(cell_t *));
     if (pcb->cells == NULL) {
         return 0;
     }
 
     for (int i = 0; i < height; i++) {
-        pcb->cells[i] = (pcb_cell_t *) malloc(width * sizeof(pcb_cell_t));
+        pcb->cells[i] = (cell_t *) malloc(width * sizeof(cell_t));
         if (pcb->cells[i] == NULL) {
             return 0;
         }
 
         for (int j = 0; j < width; j++) {
-            reset_possibilities(pcb->cells[i] + j);
+            if (!init_cell(&pcb->cells[i][j])) {
+                return 0;
+            }
         }
     }
 
@@ -60,10 +51,37 @@ void collapse_component(pcb_t *pcb, int x, int y) {
         component_t *first_component = pcb->cells[y][x].possible_components;
         component_t *chosen_component = pcb->cells[y][x].possible_components + choice;
 
-        memcpy(first_component, chosen_component, sizeof(component_t));
+        copy_component(first_component, chosen_component);
     }
 
     pcb->cells[y][x].possibilities = 1;
+
+    printf("Collapsed at (%d, %d): type %d with rotation %d\n", x, y,
+            pcb->cells[y][x].possible_components[0].type, pcb->cells[y][x].possible_components[0].rotation);
+}
+
+static void reduce_possibilities(cell_t *cell, socket_position_e cell_socket,
+        component_t *reference, socket_position_e reference_socket) {
+
+    int current_possibilities = cell->possibilities;
+    int i = 0;
+
+    while (i < current_possibilities) {
+        if (!can_connect_components(cell->possible_components + i, cell_socket,
+                    reference, reference_socket)) {
+
+            for (int j = i; j < current_possibilities - 1; j++) {
+                copy_component(cell->possible_components + j, cell->possible_components + j + 1);
+            }
+
+            current_possibilities--;
+
+        } else {
+            i++;
+        }
+    }
+
+    cell->possibilities = current_possibilities;
 }
 
 void propagate_from_component(pcb_t *pcb, int x, int y) {
@@ -71,102 +89,38 @@ void propagate_from_component(pcb_t *pcb, int x, int y) {
 
     // Up
     if (y > 0) {
-        int current_possibilities = pcb->cells[y - 1][x].possibilities;
+        cell_t *current_cell = &(pcb->cells[y - 1][x]);
 
-        int i = 0;
-        while (i < current_possibilities) {
-            component_t *current = pcb->cells[y - 1][x].possible_components + i;
-
-            if (!can_connect_components(current, DOWN, reference, UP)) {
-                for (int j = i; j < current_possibilities - 1; j++) {
-                    component_t *destiny = pcb->cells[y - 1][x].possible_components + i;
-                    component_t *source = pcb->cells[y - 1][x].possible_components + i + 1;
-
-                    memcpy(destiny, source, sizeof(component_t));
-                }
-
-                current_possibilities--;
-            } else {
-                i++;
-            }
+        if (current_cell->possibilities > 1) {
+            reduce_possibilities(current_cell, DOWN, reference, UP);
         }
-
-        pcb->cells[y - 1][x].possibilities = current_possibilities;
     }
 
     // Right
     if (x < pcb->width - 1) {
-        int current_possibilities = pcb->cells[y][x + 1].possibilities;
+        cell_t *current_cell = &(pcb->cells[y][x + 1]);
 
-        int i = 0;
-        while (i < current_possibilities) {
-            component_t *current = pcb->cells[y][x + 1].possible_components + i;
-
-            if (!can_connect_components(current, LEFT, reference, RIGHT)) {
-                for (int j = i; j < current_possibilities - 1; j++) {
-                    component_t *destiny = pcb->cells[y][x + 1].possible_components + i;
-                    component_t *source = pcb->cells[y][x + 1].possible_components + i + 1;
-
-                    memcpy(destiny, source, sizeof(component_t));
-                }
-
-                current_possibilities--;
-            } else {
-                i++;
-            }
+        if (current_cell->possibilities > 1) {
+            reduce_possibilities(current_cell, LEFT, reference, RIGHT);
         }
-
-        pcb->cells[y][x + 1].possibilities = current_possibilities;
     }
 
     // Down
     if (y < pcb->height - 1) {
-        int current_possibilities = pcb->cells[y + 1][x].possibilities;
+        cell_t *current_cell = &(pcb->cells[y + 1][x]);
 
-        int i = 0;
-        while (i < current_possibilities) {
-            component_t *current = pcb->cells[y + 1][x].possible_components + i;
-
-            if (!can_connect_components(current, UP, reference, DOWN)) {
-                for (int j = i; j < current_possibilities - 1; j++) {
-                    component_t *destiny = pcb->cells[y + 1][x].possible_components + i;
-                    component_t *source = pcb->cells[y + 1][x].possible_components + i + 1;
-
-                    memcpy(destiny, source, sizeof(component_t));
-                }
-
-                current_possibilities--;
-            } else {
-                i++;
-            }
+        if (current_cell->possibilities > 1) {
+            reduce_possibilities(current_cell, UP, reference, DOWN);
         }
-
-        pcb->cells[y + 1][x].possibilities = current_possibilities;
     }
     
     // Left
     if (x > 0) {
-        int current_possibilities = pcb->cells[y][x - 1].possibilities;
+        cell_t *current_cell = &(pcb->cells[y][x - 1]);
 
-        int i = 0;
-        while (i < current_possibilities) {
-            component_t *current = pcb->cells[y][x - 1].possible_components + i;
-
-            if (!can_connect_components(current, RIGHT, reference, LEFT)) {
-                for (int j = i; j < current_possibilities - 1; j++) {
-                    component_t *destiny = pcb->cells[y][x - 1].possible_components + i;
-                    component_t *source = pcb->cells[y][x - 1].possible_components + i + 1;
-
-                    memcpy(destiny, source, sizeof(component_t));
-                }
-
-                current_possibilities--;
-            } else {
-                i++;
-            }
+        if (current_cell->possibilities > 1) {
+            reduce_possibilities(current_cell, RIGHT, reference, LEFT);
         }
-
-        pcb->cells[y][x - 1].possibilities = current_possibilities;
     }
 }
 
@@ -183,13 +137,5 @@ int pcb_collapsed(pcb_t *pcb) {
 }
 
 void debug_print_pcb(pcb_t *pcb) {
-    for (int i = 0; i < pcb->height; i++) {
-        // UP
-        for (int j = 0; j < pcb->width; j++) {
-            component_t *current = pcb->cells[i][j].possible_components;
-
-            current->sockets[UP].c
-        }
-    }
 }
 

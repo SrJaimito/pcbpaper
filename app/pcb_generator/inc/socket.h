@@ -1,15 +1,16 @@
 #ifndef __PCBPAPER_PCBGEN_SOCKET_H__
 #define __PCBPAPER_PCBGEN_SOCKET_H__
 
-#define NUM_CONNS 3
-
-typedef char connection_t;
+#define NUM_CONNECTIONS 3
 
 typedef struct {
-    connection_t conns[NUM_CONNS];
+    char connections[NUM_CONNECTIONS];
 } socket_t;
 
-int can_connect_sockets(socket_t *, socket_t *);
+void assign_connections(socket_t *socket, const char *connections);
+int can_connect_sockets(const socket_t *, const socket_t *);
+
+void copy_socket(socket_t *destiny, socket_t *source);
 
 #endif
 

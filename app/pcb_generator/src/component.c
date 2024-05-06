@@ -1,372 +1,160 @@
 #include "../inc/component.h"
 
-component_t create_component(int type) {
-    component_t component;
-    component.type = type;
-    component.rotation = ROT_0;
+void create_component(component_t *component, int type, component_rotation_e rotation) {
+    component->type = type;
+    component->rotation = rotation;
 
     switch (type) {
         case 0:
-            component.sockets[UP].conns[0] = 'A';
-            component.sockets[UP].conns[1] = 'A';
-            component.sockets[UP].conns[2] = 'A';
-
-            component.sockets[RIGHT].conns[0] = 'A';
-            component.sockets[RIGHT].conns[1] = 'A';
-            component.sockets[RIGHT].conns[2] = 'A';
-
-            component.sockets[DOWN].conns[0] = 'A';
-            component.sockets[DOWN].conns[1] = 'A';
-            component.sockets[DOWN].conns[2] = 'A';
-
-            component.sockets[LEFT].conns[0] = 'A';
-            component.sockets[LEFT].conns[1] = 'A';
-            component.sockets[LEFT].conns[2] = 'A';
+            assign_connections(component->sockets + UP, "AAA");
+            assign_connections(component->sockets + RIGHT, "AAA");
+            assign_connections(component->sockets + DOWN, "AAA");
+            assign_connections(component->sockets + LEFT, "AAA");
 
             break;
 
         case 1:
-            component.sockets[UP].conns[0] = 'A';
-            component.sockets[UP].conns[1] = 'A';
-            component.sockets[UP].conns[2] = 'A';
-
-            component.sockets[RIGHT].conns[0] = 'A';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'A';
+            assign_connections(component->sockets + UP, "AAA");
+            assign_connections(component->sockets + RIGHT, "ABB");
+            assign_connections(component->sockets + DOWN, "BBB");
+            assign_connections(component->sockets + LEFT, "BBA");
 
             break;
 
         case 2:
-            component.sockets[UP].conns[0] = 'A';
-            component.sockets[UP].conns[1] = 'A';
-            component.sockets[UP].conns[2] = 'A';
-
-            component.sockets[RIGHT].conns[0] = 'A';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'A';
+            assign_connections(component->sockets + UP, "AAA");
+            assign_connections(component->sockets + RIGHT, "ABB");
+            assign_connections(component->sockets + DOWN, "BBB");
+            assign_connections(component->sockets + LEFT, "BBA");
 
             break;
 
         case 3:
-            component.sockets[UP].conns[0] = 'A';
-            component.sockets[UP].conns[1] = 'A';
-            component.sockets[UP].conns[2] = 'A';
-
-            component.sockets[RIGHT].conns[0] = 'A';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'A';
+            assign_connections(component->sockets + UP, "AAA");
+            assign_connections(component->sockets + RIGHT, "ABB");
+            assign_connections(component->sockets + DOWN, "BBB");
+            assign_connections(component->sockets + LEFT, "BBA");
 
             break;
 
         case 4:
-            component.sockets[UP].conns[0] = 'A';
-            component.sockets[UP].conns[1] = 'B';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'A';
+            assign_connections(component->sockets + UP, "ABB");
+            assign_connections(component->sockets + RIGHT, "BBB");
+            assign_connections(component->sockets + DOWN, "BBB");
+            assign_connections(component->sockets + LEFT, "BBA");
 
             break;
 
         case 5:
-            component.sockets[UP].conns[0] = 'A';
-            component.sockets[UP].conns[1] = 'B';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'C';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'C';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'A';
+            assign_connections(component->sockets + UP, "ABB");
+            assign_connections(component->sockets + RIGHT, "BCB");
+            assign_connections(component->sockets + DOWN, "BCB");
+            assign_connections(component->sockets + LEFT, "BBA");
 
             break;
 
         case 6:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'C';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'C';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BCB");
+            assign_connections(component->sockets + RIGHT, "BBB");
+            assign_connections(component->sockets + DOWN, "BCB");
+            assign_connections(component->sockets + LEFT, "BBB");
 
             break;
 
         case 7:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'C';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'C';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'C';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BCB");
+            assign_connections(component->sockets + RIGHT, "BBB");
+            assign_connections(component->sockets + DOWN, "BCB");
+            assign_connections(component->sockets + LEFT, "BCB");
 
             break;
 
         case 8:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'B';
-            component.sockets[UP].conns[2] = 'C';
-
-            component.sockets[RIGHT].conns[0] = 'C';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'C';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'C';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BBC");
+            assign_connections(component->sockets + RIGHT, "CBB");
+            assign_connections(component->sockets + DOWN, "BCB");
+            assign_connections(component->sockets + LEFT, "BCB");
 
             break;
 
         case 9:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'C';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'C';
-
-            component.sockets[DOWN].conns[0] = 'C';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'C';
-
-            component.sockets[LEFT].conns[0] = 'C';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BCB");
+            assign_connections(component->sockets + RIGHT, "BBC");
+            assign_connections(component->sockets + DOWN, "CBC");
+            assign_connections(component->sockets + LEFT, "CBB");
 
             break;
 
         case 10:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'C';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BCB");
+            assign_connections(component->sockets + RIGHT, "BBB");
+            assign_connections(component->sockets + DOWN, "BBB");
+            assign_connections(component->sockets + LEFT, "BBB");
 
             break;
 
         case 11:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'B';
-            component.sockets[UP].conns[2] = 'C';
-
-            component.sockets[RIGHT].conns[0] = 'C';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BBC");
+            assign_connections(component->sockets + RIGHT, "CBB");
+            assign_connections(component->sockets + DOWN, "BBB");
+            assign_connections(component->sockets + LEFT, "BBB");
 
             break;
 
         case 12:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'B';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BBB");
+            assign_connections(component->sockets + RIGHT, "BBB");
+            assign_connections(component->sockets + DOWN, "BBB");
+            assign_connections(component->sockets + LEFT, "BBB");
 
             break;
 
         case 13:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'C';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'C';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BCB");
+            assign_connections(component->sockets + RIGHT, "BBB");
+            assign_connections(component->sockets + DOWN, "BBB");
+            assign_connections(component->sockets + LEFT, "BCB");
 
             break;
 
         case 14:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'C';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'C';
-
-            component.sockets[LEFT].conns[0] = 'C';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BCB");
+            assign_connections(component->sockets + RIGHT, "BBB");
+            assign_connections(component->sockets + DOWN, "BBC");
+            assign_connections(component->sockets + LEFT, "CBB");
 
             break;
 
         case 15:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'B';
-            component.sockets[UP].conns[2] = 'C';
-
-            component.sockets[RIGHT].conns[0] = 'C';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'C';
-
-            component.sockets[LEFT].conns[0] = 'C';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BBC");
+            assign_connections(component->sockets + RIGHT, "CBB");
+            assign_connections(component->sockets + DOWN, "BBC");
+            assign_connections(component->sockets + LEFT, "CBB");
 
             break;
 
         case 16:
-            component.sockets[UP].conns[0] = 'A';
-            component.sockets[UP].conns[1] = 'A';
-            component.sockets[UP].conns[2] = 'A';
-
-            component.sockets[RIGHT].conns[0] = 'A';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'B';
-
-            component.sockets[DOWN].conns[0] = 'B';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'C';
-
-            component.sockets[LEFT].conns[0] = 'C';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'A';
+            assign_connections(component->sockets + UP, "AAA");
+            assign_connections(component->sockets + RIGHT, "ABB");
+            assign_connections(component->sockets + DOWN, "BBC");
+            assign_connections(component->sockets + LEFT, "CBA");
 
             break;
 
         case 17:
-            component.sockets[UP].conns[0] = 'A';
-            component.sockets[UP].conns[1] = 'A';
-            component.sockets[UP].conns[2] = 'A';
-
-            component.sockets[RIGHT].conns[0] = 'A';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'C';
-
-            component.sockets[DOWN].conns[0] = 'C';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'A';
+            assign_connections(component->sockets + UP, "AAA");
+            assign_connections(component->sockets + RIGHT, "ABC");
+            assign_connections(component->sockets + DOWN, "CBB");
+            assign_connections(component->sockets + LEFT, "BBA");
 
             break;
 
         case 18:
-            component.sockets[UP].conns[0] = 'B';
-            component.sockets[UP].conns[1] = 'C';
-            component.sockets[UP].conns[2] = 'B';
-
-            component.sockets[RIGHT].conns[0] = 'B';
-            component.sockets[RIGHT].conns[1] = 'B';
-            component.sockets[RIGHT].conns[2] = 'C';
-
-            component.sockets[DOWN].conns[0] = 'C';
-            component.sockets[DOWN].conns[1] = 'B';
-            component.sockets[DOWN].conns[2] = 'B';
-
-            component.sockets[LEFT].conns[0] = 'B';
-            component.sockets[LEFT].conns[1] = 'B';
-            component.sockets[LEFT].conns[2] = 'B';
+            assign_connections(component->sockets + UP, "BCB");
+            assign_connections(component->sockets + RIGHT, "BBC");
+            assign_connections(component->sockets + DOWN, "CBB");
+            assign_connections(component->sockets + LEFT, "BBB");
     }
-
-    return component;
 }
 
 socket_t *get_socket(component_t *component, socket_position_e position) {
@@ -382,5 +170,14 @@ int can_connect_components(component_t *comp_a, socket_position_e pos_a,
     socket_t *to_socket = get_socket(comp_b, pos_b);
 
     return can_connect_sockets(from_socket, to_socket);
+}
+
+void copy_component(component_t *destiny, component_t *source) {
+    destiny->type = source->type;
+    destiny->rotation = source->rotation;
+
+    for (int i = 0; i < NUM_SOCKETS; i++) {
+        copy_socket(destiny->sockets + i, source->sockets + i);
+    }
 }
 

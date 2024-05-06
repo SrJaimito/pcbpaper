@@ -6,6 +6,7 @@
 #include "socket.h"
 
 #define NUM_COMPONENT_TYPES 19
+#define NUM_ROTATIONS       4
 #define NUM_SOCKETS         4
 
 typedef enum {
@@ -24,13 +25,14 @@ typedef enum {
 
 typedef struct {
     int type;
-    socket_t sockets[NUM_SOCKETS];
     component_rotation_e rotation;
+    socket_t sockets[NUM_SOCKETS];
 } component_t;
 
-component_t create_component(int type);
+void create_component(component_t *component, int type, component_rotation_e rotation);
+void copy_component(component_t *destiny, component_t *source);
 
-socket_t *get_socket(component_t * component, socket_position_e position);
+socket_t *get_socket(component_t *component, socket_position_e position);
 
 int can_connect_components(component_t *comp_a, socket_position_e pos_a,
         component_t *comp_b, socket_position_e pos_b);

@@ -1,11 +1,28 @@
-BUILD_DIR = ../../build
+SUBMODULE_DIR = app/pcb_generator
 
-$(BUILD_DIR)/generator.o: src/generator.c inc/generator.h $(BUILD_DIR)/component.o 
+SUBMOD_INC_DIR = $(SUBMODULE_DIR)/inc
+SUBMOD_SRC_DIR = $(SUBMODULE_DIR)/src
+SUBMOD_TEST_DIR = $(SUBMODULE_DIR)/test
+
+# Common objects
+
+$(BUILD_DIR)/generator.o: $(SUBMOD_SRC_DIR)/generator.c $(SUBMOD_INC_DIR)/generator.h
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-$(BUILD_DIR)/component.o: src/component.c inc/component.h $(BUILD_DIR)/socket.o 
+$(BUILD_DIR)/cell.o: $(SUBMOD_SRC_DIR)/cell.c $(SUBMOD_INC_DIR)/cell.h
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-$(BUILD_DIR)/socket.o: src/socket.c inc/socket.h
+$(BUILD_DIR)/component.o: $(SUBMOD_SRC_DIR)/component.c $(SUBMOD_INC_DIR)/component.h
 	$(CC) -c $< -o $@ $(CFLAGS)
+
+$(BUILD_DIR)/socket.o: $(SUBMOD_SRC_DIR)/socket.c $(SUBMOD_INC_DIR)/socket.h
+	$(CC) -c $< -o $@ $(CFLAGS)
+
+# Test programs
+
+$(TEST_DIR)/test_socket: $(SUBMOD_TEST_DIR)/test_socket.c $(BUILD_DIR)/socket.o
+	$(CC) $^ -o $@ $(CFLAGS)
+
+$(TEST_DIR)/test_component: $(SUBMOD_TEST_DIR)/test_component.c $(BUILD_DIR)/component.o $(BUILD_DIR)/socket.o
+	$(CC) $^ -o $@ $(CFLAGS)
 
